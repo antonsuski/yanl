@@ -1,36 +1,27 @@
-# Directories
-/build
-/.vscode
+# Ignore everything
+*
 
-# Prerequisites
-*.d
+# Allow all directories (so Git can search them)
+!*/
+!*/src
+!*/subprojects
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Allow specific file types
+!*.c
+!*.cc
+!*.cxx
+!*.cpp
+!*.h
+!*.hh
+!*.hxx
+!*.hpp
 
-# Precompiled Headers
-*.gch
-*.pch
+!*.md
+!*.sh
+!*.build
+!*.wrap
+!*.txt
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Allow specific config files
+!.gitignore
 
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
