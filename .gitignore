@@ -4,6 +4,7 @@
 # Allow all directories (so Git can search them)
 !*/
 !*/src
+!*/include
 !*/subprojects
 
 # Allow specific file types
