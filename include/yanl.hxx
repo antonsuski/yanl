@@ -18,32 +18,24 @@ namespace yanl
 {
 class socket
 {
-public:
-    enum network_protocol
-    {
-        ipv4 = 0,
-        ipv6
-    };
-    enum transport_protocol
-    {
-        tcp = 0,
-        udp
-    };
-
 private:
-    int                fd{ -1 };
-    bool               is_addr_valid{ false };
-    network_protocol   np = { ipv4 };
-    transport_protocol tp = { udp };
-    std::string        port{ "7777" };
-    std::string        address{ "localhost" };
+    std::string m_dest_address{ "localhost" };
+    std::string m_dest_port{ "7777" };
+
+    struct addrinfo* m_servinfo;
+
+    int m_fd{ -1 };
+
+    socket* init();
 
 public:
-    socket();
+    socket(const std::string_view& dest_address = "localhost",
+           const std::string_view& dest_port    = "7777");
+
+    bool        send(const std::string& buffer);
+    std::string receive();
+
     ~socket();
-    int init(const std::string_view address = "localhost",
-             const std::string_view port = "7777", network_protocol np = ipv4,
-             transport_protocol tp = udp);
 };
 
 } // namespace yanl

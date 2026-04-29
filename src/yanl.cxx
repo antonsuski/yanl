@@ -11,14 +11,15 @@
 
 #include "yanl.hxx"
 
-#include <errno.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <cerrno>
 #include <cstring>
+#include <format>
 #include <iostream>
 #include <string>
 #include <string_view>
@@ -29,37 +30,36 @@ static char _addr_in6_buff[INET6_ADDRSTRLEN];
 
 namespace yanl
 {
-socket::socket()
+socket::socket(const std::string_view& dest_address,
+               const std::string_view& dest_port)
+    : m_dest_address{ dest_address }
+    , m_dest_port{ dest_port }
+    , m_fd{ -1 }
 {
-    std::cout << "socket default constructor\n";
-
-    addrinfo  hint;
-    addrinfo* result = nullptr;
-
-    std::memset(&hint, 0U, sizeof(hint));
-    hint.ai_family = AF_UNSPEC;
-    std::cout.flush();
+    std::cout << "socket ctor\n";
 }
+
+socket* socket::init()
+{
+    struct addrinfo hints{};
+    return this;
+}
+
+bool        socket::send(const std::string& buffer) {}
+std::string socket::receive() {}
 
 socket::~socket()
 {
-    if (this->fd != -1)
+    if (m_fd != -1)
     {
-        shutdown(this->fd, SHUT_RDWR);
+        int res = shutdown(m_fd, SHUT_RDWR);
+        if (res)
+        {
+            std::cout << std::format("file descriptor was closed with err:{}\n",
+                                     std::strerror(errno));
+        }
     }
+    std::cout << "socket dtor\n";
 }
 
-int socket::init(const std::string_view address, const std::string_view port,
-                 network_protocol np, transport_protocol tp)
-{
-    this->port    = port;
-    this->address = address;
-
-    addrinfo  hint;
-    addrinfo* result = nullptr;
-
-    std::memset(&hint, 0U, sizeof(hint));
-
-    return -1;
-}
 } // namespace yanl
